@@ -27,8 +27,17 @@ public class App {
         System.out.println(listaDeFilmes.get(0));
 
         // exibir e manipular os dados
+
         for (Map<String, String> filme : listaDeFilmes) {
 
+            String textoDaMensagem = "";
+            double notaImdb = Double.parseDouble(filme.get("imDbRating"));
+            if (notaImdb > 9){
+                textoDaMensagem = "TOPZERA";
+            } else {
+                textoDaMensagem = "MEIA BOCA";
+            }
+            
             String urlImagem = filme.get("image");
             String titulo = filme.get("title");
 
@@ -36,7 +45,7 @@ public class App {
             String nomeDoArquivo = titulo + ".png";
 
             var geradora = new GeradoraDeFigurinhas();
-            geradora.criar(inputStream, nomeDoArquivo);
+            geradora.criar(inputStream, nomeDoArquivo, textoDaMensagem);
 
 
             System.out.println("\u001b[1m Titulo: \u001b[m" + titulo);
