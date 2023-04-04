@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 public class GeradoraDeFigurinhas {
 
     // ler a imagem
-    public void criar(InputStream inputStream, String nomeDoArquivo) throws Exception {
+    public void criar(InputStream inputStream, String nomeDoArquivo, String textoDaMensagem) throws Exception {
         // InputStream inputStream = new FileInputStream(new
         // File("assets/shawshank-redemption.jpg"));
         // InputStream inputStream = new URL(
@@ -26,6 +26,7 @@ public class GeradoraDeFigurinhas {
 
         // copiar a imagem original para a nova em memoria
         Graphics2D graphics = (Graphics2D) novaImagem.getGraphics();
+        
         // graphics.drawImage(imagemOriginal, null, 0, 0);
         graphics.drawImage(imagemOriginal, 0, 0, null);
 
@@ -35,7 +36,7 @@ public class GeradoraDeFigurinhas {
         graphics.setFont(fonte);
 
         // escrever uma frase na nova imagem
-        graphics.drawString("TOPZERA", 100, novaAltura - 100);
+        graphics.drawString(textoDaMensagem, 150, novaAltura - 80);
 
         // escrever a nova imagem
         ImageIO.write(novaImagem, "png", new File("assets/" + nomeDoArquivo));
