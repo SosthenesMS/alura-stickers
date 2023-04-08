@@ -32,12 +32,12 @@ public class App {
 
             String textoDaMensagem = "";
             double notaImdb = Double.parseDouble(filme.get("imDbRating"));
-            if (notaImdb > 9){
+            if (notaImdb > 9) {
                 textoDaMensagem = "TOPZERA";
             } else {
                 textoDaMensagem = "MEIA BOCA";
             }
-            
+
             String urlImagem = filme.get("image");
             String titulo = filme.get("title");
 
@@ -46,7 +46,6 @@ public class App {
 
             var geradora = new GeradoraDeFigurinhas();
             geradora.criar(inputStream, nomeDoArquivo, textoDaMensagem);
-
 
             System.out.println("\u001b[1m Titulo: \u001b[m" + titulo);
             System.out.println("\u001b[1m Imagem: \u001b[m" + filme.get("image"));
