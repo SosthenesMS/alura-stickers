@@ -1,58 +1,42 @@
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
-import java.util.Map;
 
 public class App {
     public static void main(String[] args) throws Exception {
 
-        // Fazer uma conexão e buscar o top 250 filmes
+        // Fazer uma conexão e buscar o top 250 filmes do imdb
         String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/TopMovies.json";
-        URI endereco = URI.create(url);
-        var cliente = HttpClient.newHttpClient();
-        var request = HttpRequest.newBuilder(endereco).GET().build();
-        HttpResponse<String> response = cliente.send(request, BodyHandlers.ofString());
-        String body = response.body();
+        ExtratorDeConteudoDoIMD extrator = new ExtratorDeConteudoDoIMD();
 
-        // Extratir só os dados que interessam (titulo, poster, classificação)
-        JsonParser parser = new JsonParser();
+        // Fazer uma conexão e buscar a foto do dia na API da Nasa
+        // String url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&start_date=2022-06-12&end_date=2022-06-14";
+        // ExtratorDeConteudoDaNasa extrator = new ExtratorDeConteudoDaNasa();
 
-        List<Map<String, String>> listaDeFilmes = parser.parse(body);
-        System.out.println(listaDeFilmes.size());
-        System.out.println(listaDeFilmes.get(0));
+        var http = new ClienteHttp();
+        String json = http.buscaDados(url);
 
         // exibir e manipular os dados
+        List<Conteudo> conteudos = extrator.extraiConteudos(json);
 
-        for (Map<String, String> filme : listaDeFilmes) {
+        GeradoraDeFigurinhas geradora = new GeradoraDeFigurinhas();
+        String textoDaMensagem = "TOPZERA";
 
-            String textoDaMensagem = "";
-            double notaImdb = Double.parseDouble(filme.get("imDbRating"));
-            if (notaImdb > 9) {
-                textoDaMensagem = "TOPZERA";
-            } else {
-                textoDaMensagem = "MEIA BOCA";
-            }
+        for (int i = 0; i < 3; i++) {
 
-            String urlImagem = filme.get("image");
-            String titulo = filme.get("title");
+            Conteudo conteudo = conteudos.get(i);
 
-            InputStream inputStream = new URL(urlImagem).openStream();
-            String nomeDoArquivo = titulo + ".png";
+            InputStream inputStream = new URL(conteudo.getUrlImagem()).openStream();
+            String nomeDoArquivo = conteudo.getTitulo() + ".png";
 
-            var geradora = new GeradoraDeFigurinhas();
             geradora.criar(inputStream, nomeDoArquivo, textoDaMensagem);
 
-            System.out.println("\u001b[1m Titulo: \u001b[m" + titulo);
-            System.out.println("\u001b[1m Imagem: \u001b[m" + filme.get("image"));
-            System.out.println("\u001b[45m \u001b[1m Nota IMD: " + filme.get("imDbRating") + " \u001b[m");
+            System.out.println("\u001b[1m Titulo: \u001b[m" + conteudo.getTitulo());
+            // System.out.println("\u001b[1m Imagem: \u001b[m" + filme.get("image"));
+            // System.out.println("\u001b[45m \u001b[1m Nota IMD: " +
+            // filme.get("imDbRating") + " \u001b[m");
             System.out.println();
 
         }
-
     }
 }

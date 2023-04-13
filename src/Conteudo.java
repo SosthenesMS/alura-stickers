@@ -1,7 +1,7 @@
 public class Conteudo {
 
-    private String titulo;
-    private String urlImagem;
+    private final String titulo;
+    private final String urlImagem;
 
     public String getTitulo() {
         return titulo;
@@ -9,6 +9,11 @@ public class Conteudo {
 
     public String getUrlImagem() {
         return urlImagem;
+    }
+
+    public Conteudo(String titulo, String urlImagem) {
+        this.titulo = titulo;
+        this.urlImagem = urlImagem;
     }
 
 }
